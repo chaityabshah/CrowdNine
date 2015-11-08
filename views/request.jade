@@ -2,18 +2,23 @@ extends layout
 
 block content
   .page-header
-    h3 Contact Form
+    h3 Make a Request
+    h4 Use this form to request a basket of items.
 
   form.form-horizontal(role='form', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
       label(class='col-sm-2 control-label', for='name') Name
       .col-sm-8
-        input.form-control(type='text', name='name', id='name', autofocus=true)
+        input.form-control(type='text', name='name', id='name', autofocus=true, placeholder='John Doe')
     .form-group
-      label(class='col-sm-2 control-label', for='email') Email
+      label(class='col-sm-2 control-label', for='address') Address
       .col-sm-8
-        input.form-control(type='text', name='email', id='email')
+        input.form-control(type='text', name='address', id='address', placeholder='20 McAllister St, San Fransisco, CA')
+    .form-group
+      label(class='col-sm-2 control-label', for='phone') Phone
+      .col-sm-8
+        input.form-control(type='text', name='phone', id='phone', placeholder='9999999999')
     .form-group
       label(class='col-sm-2 control-label', for='message') Body
       .col-sm-8
@@ -22,4 +27,4 @@ block content
       .col-sm-offset-2.col-sm-8
         button.btn.btn-primary(type='submit')
           i.fa.fa-envelope
-          | Send
+          | Submit
