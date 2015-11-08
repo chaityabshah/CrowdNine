@@ -28,7 +28,17 @@ block content
       .col-sm-8
         h5 33%
     .form-group
-      .col-sm-offset-2.col-sm-8
-        button.btn.btn-primary(type='submit')
-          i.fa.fa-money
-          | Help fund this basket
+      .row
+        .col-sm-4
+          h5 Help fund this basket
+          input.form-control(type='text', name='money', id='money', placeholder='$5.00')
+          form(method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    script(
+    src='https://checkout.stripe.com/checkout.js',
+    class='stripe-button',
+    data-key='pk_test_zcuyz8JcFhVIISmwAJlH3G0j',
+    data-image='http://i.imgur.com/CBixK4W.png',
+    data-name='CrowdNine Basket',
+    data-description='Grocery Basket',
+	data-amount='100')
