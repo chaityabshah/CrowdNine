@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  .page-header
+    h3 Fund a Request
+    h4 Browse basket requests made near you.
+
+  form.form-horizontal(role='form', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
