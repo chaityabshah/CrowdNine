@@ -10,4 +10,7 @@ h3{
 
 .navbar-brand{
     font-family:Helvetica;
+    font-weight: bold;
+    color: #2ecc71 !important;
+    font-size: 30px;
 }
