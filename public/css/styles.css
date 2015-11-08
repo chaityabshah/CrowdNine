@@ -8,6 +8,14 @@ h3{
     font-size: 30px;
 }
 
+h4{
+    text-align: center;
+}
+
+h5{
+    text-align: left;
+}
+
 .navbar-brand{
     font-family:Helvetica;
     font-weight: bold;
