@@ -8,7 +8,8 @@ var requestSchema = new mongoose.Schema({
   address: String,
   phone: String,
   store: String,
-  items: Array
+  itemList: Array,
+  priceTotal: String
 });
 
 /**

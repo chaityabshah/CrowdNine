@@ -25,14 +25,22 @@ exports.postRequest = function(req, res) {
   //var address = req.body.address;
   //var phone = req.body.phone;
   //INSERT THE CODE TO FIND STUFF HERE
-  
-  var req = new Request({
+  res.render('request.jade', {
+        items: true,
+        price: true
+    });
+
+  var requestVar = new Request({
     name: req.body.name,
     address: req.body.address,
-    phone: req.body.phone
+    phone: req.body.phone,
+    itemList: items,
+    priceTotal: price
   });
 
-
-  res.redirect('/request');
-  
+  requestVar.save(function(err) {
+    if (err) return next(err);
+      req.flash('success', { msg: 'Request sent.'});
+      res.redirect('/request');
+    });  
 };
