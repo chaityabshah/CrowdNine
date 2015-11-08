@@ -43,7 +43,7 @@ function nearestPostmates(glat, glng) {
         
         cities.sort(compare);
         
-        return cities[cities.length-1].address;
+        return cities[0].address;
 }
 
 function compare(a,b) {
