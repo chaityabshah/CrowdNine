@@ -5,8 +5,6 @@ var nodemailer = require('nodemailer');
 var passport = require('passport');
 var Request = require('../models/Request');
 var secrets = require('../config/secrets');
-var items = ["blah"];
-var price = -1;
 /**
  * GET /request
  * request form page.
@@ -15,13 +13,6 @@ exports.getRequest = function(req, res) {
   res.render('request', {
     title: 'Request',
   });
-  if(req.user){
-    res.render('request', {
-      title: 'Request'
-    });
-  } else {
-    res.redirect('/login');
-  }
 };
 
 /**
@@ -38,9 +29,7 @@ exports.postRequest = function(req, res) {
   var requestVar = new Request({
     name: req.body.name,
     address: req.body.address,
-    phone: req.body.phone,
-    itemList: res.locals.items,
-    priceTotal: res.locals.price
+    phone: req.body.phone
   });
 
   requestVar.save(function(err) {
