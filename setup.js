@@ -5,7 +5,7 @@ var multiline = require('multiline');
 
 if (os.platform() === 'win32') {
   console.log('**************************************************************');
-  console.log('Hackathon Starter Generator has been disabled on Windows until');
+  console.log('CrowdFeed Generator has been disabled on Windows until');
   console.log('https://github.com/chjj/blessed fixes the issue #179.');
   console.log('**************************************************************');
   process.exit();
@@ -40,7 +40,7 @@ var homeTitle = blessed.text({
   align: 'center',
   fg: 'blue',
   bg: 'white',
-  content: 'Hackathon Starter (c) 2014'
+  content: 'CrowdFeed (c) 2014'
 });
 
 var footer = blessed.text({

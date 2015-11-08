@@ -1,9 +1,9 @@
 {
-  "name": "hackathon-starter",
+  "name": "crowdfeed",
   "version": "3.1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/chaityabshah/CrowdFeed.git"
   },
   "scripts": {
     "start": "node app.js",
