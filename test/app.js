@@ -41,6 +41,14 @@ describe('GET /contact', function() {
   });
 });
 
+describe('GET /request', function() {
+  it('should return 200 OK', function(done) {
+    request(app)
+      .get('/request')
+      .expect(200, done);
+  });
+});
+
 describe('GET /random-url', function() {
   it('should return 404', function(done) {
     request(app)
