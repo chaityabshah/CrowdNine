@@ -38,7 +38,7 @@ var secrets = require('../config/secrets');
  */
 exports.getApi = function(req, res) {
   res.render('api/index', {
-    title: 'API Examples'
+    title: 'Home'
   });
 };
 
