@@ -8,6 +8,14 @@ h3{
     font-size: 30px;
 }
 
+h4{
+    text-align: center;
+}
+
+h5{
+    text-align: left;
+}
+
 .navbar-brand{
     font-family:Helvetica;
 }
@@ -32,4 +40,7 @@ a:visited{
 hr{
 	border:none;
 	margin: 0 0 0 10;
+    font-weight: bold;
+    color: #2ecc71 !important;
+    font-size: 30px;
 }
