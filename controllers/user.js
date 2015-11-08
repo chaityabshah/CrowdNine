@@ -356,3 +356,17 @@ exports.postForgot = function(req, res, next) {
     res.redirect('/forgot');
   });
 };
+
+/**
+*  requireAuth
+*  Require Authentication for certain functions.
+*/
+function requireAuth(req, res, next){
+
+  // check if the user is logged in
+  if(!req.isAuthenticated()){
+    req.session.messages = "You need to login to view this page";
+    res.redirect('/login');
+  }
+  next();
+}

@@ -18,6 +18,9 @@ h5{
 
 .navbar-brand{
     font-family:Helvetica;
+    font-weight: bold;
+    color: #2ecc71 !important;
+    font-size: 30px;
 }
 
 a{
@@ -40,7 +43,4 @@ a:visited{
 hr{
 	border:none;
 	margin: 0 0 0 10;
-    font-weight: bold;
-    color: #2ecc71 !important;
-    font-size: 30px;
 }

@@ -11,9 +11,13 @@ var secrets = require('../config/secrets');
  * request form page.
  */
 exports.getRequest = function(req, res) {
-  res.render('request', {
-    title: 'Request'
-  });
+  if(req.user){
+    res.render('request', {
+      title: 'Request'
+    });
+  } else {
+    res.redirect('/login');
+  }
 };
 
 /**
@@ -42,5 +46,5 @@ exports.postRequest = function(req, res) {
     if (err) return next(err);
       req.flash('success', { msg: 'Request sent.'});
       res.redirect('/request');
-    });  
+    });
 };
