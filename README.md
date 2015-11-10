@@ -1,5 +1,5 @@
 # CrowdNine
-######Submission for HackDuke2015
+######Submission for HackDuke2015[http://devpost.com/software/crowdnine]
 
 ##Inspiration
 As our group brainstormed, we thought of all of the problems we could address, such as what we saw in our day to day lives. At some point or another, we began to discuss the homeless and the adversities they faced. While thinking about how we could tackle the issues of the homeless and low-income, we stumbled upon data showing the low access to food and groceries that many American families faced. For some, not having a car made it difficult for people to go grocery shopping and get food and necessities they might need - especially if they had to work many hours of the day. We decided that we could address this problem with a tool that we used when we needed things from places not immediately available to us on campus - Postmates. The intersection of the two resulted in CrowdNine.
