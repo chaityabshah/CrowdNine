@@ -130,7 +130,7 @@ exports.postRequest = function(req, res) {
         
     });
     return d;
-}
+};
 
 try {
 geocodeLoc(combined).then(function(result){
