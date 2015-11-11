@@ -101,7 +101,7 @@ exports.postRequest = function(req, res) {
         }
     });
     return d;
-}
+};
 
 try {
 geocodeLoc(req.body.address).then(function(result){

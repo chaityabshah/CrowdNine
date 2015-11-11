@@ -15,6 +15,7 @@ tmp
 
 # Dependency directory
 node_modules
+nbproject
 bower_components
 
 # Editors
