@@ -67,15 +67,36 @@ function compare(a,b) {
  * POST /request
  * Send a request form via Nodemailer.
  */
+function flash(req, res) {
+    req.flash('errors', { msg: "Please enter a valid address."});
+    res.redirect('/request');
+}
 exports.postRequest = function(req, res) {
  // var name = req.body.name;
   //var address = req.body.address;
   //var phone = req.body.phone;
   //INSERT THE CODE TO FIND STUFF HERE
-  var newArr = JSON.parse(req.body.arr);
+  if(req.body.arr.length != 0) {
+    var newArr = JSON.parse(req.body.arr);
+  } else {
+    var newArr = [];
+  }
+  var combined = req.body.street + "+" + req.body.city + "+" + req.body.state;
+  req.assert('street', 'Street is empty.').notEmpty();
+  req.assert('city', 'City is empty.').notEmpty();
+  req.assert('state', 'State must be 2 letters.').len(2, 2);
+  req.assert('phone', 'Phone number is invalid.').isMobilePhone("en-US");
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/request');
+  }
   var requestVar = new Request({
     name: req.body.name,
-    address: req.body.address,
+    street: req.body.street,
+    city: req.body.city,
+    state: req.body.state,
     phone: req.body.phone,
     priceTotal: req.body.price,
     itemList: newArr
@@ -85,32 +106,38 @@ exports.postRequest = function(req, res) {
   
   var geocodeLoc = function(adr) {
     var result;
+    
     var d = Promise.defer();
     var requestStart = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-    var address = adr.replace(",", "").replace(" ", "+");
     var APIkey = "&key=AIzaSyDSxfQbMazAVi5f6sa_6u2U0g8XXqIv9lk";
 
-    var baseURL = requestStart.concat(address).concat(APIkey);
+    var baseURL = requestStart.concat(adr).concat(APIkey);
+    
     
     //var baseURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address;
-    
     request(baseURL, function(e, r, b){
-        if(!e && r.statusCode === 200){
+        if(JSON.parse(b)["results"].length == 0) {
+            
+            d.resolve(e);
+        } else {
+            if(!e && r.statusCode === 200){
             result = (JSON.parse(b).results[0].geometry.location);
             d.resolve(result);
-        }else{
-            d.reject(e);
+            }else{
+                d.reject(e);
+            }
         }
+        
     });
     return d;
 }
 
 try {
-geocodeLoc(req.body.address).then(function(result){
+geocodeLoc(combined).then(function(result){
     latlng = result;
     console.log(nearestPostmates(result.lat, result.lng));
-});} catch (err){
-    
+});
+} catch (err){
 }
 
   requestVar.save(function(err) {
