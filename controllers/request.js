@@ -72,11 +72,13 @@ exports.postRequest = function(req, res) {
   //var address = req.body.address;
   //var phone = req.body.phone;
   //INSERT THE CODE TO FIND STUFF HERE
-  
+  var newArr = JSON.parse(req.body.arr);
   var requestVar = new Request({
     name: req.body.name,
     address: req.body.address,
-    phone: req.body.phone
+    phone: req.body.phone,
+    priceTotal: req.body.price,
+    itemList: newArr
   });
   
   var latlng;
