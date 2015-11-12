@@ -1,6 +1,9 @@
 {
   "name": "CrowdNine",
   "version": "3.1.0",
+  "engines": {
+	  "node": "*"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/chaityabshah/CrowdNine.git"
@@ -36,6 +39,7 @@
     "geoip-lite": "^1.1.6",
     "geolocation": "^0.2.0",
     "github-api": "^0.10.6",
+    "http": "0.0.0",
     "instagram-node": "^0.5.8",
     "jade": "^1.11.0",
     "json": "^9.0.3",
