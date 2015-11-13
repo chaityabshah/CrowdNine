@@ -8,15 +8,15 @@ var secrets = require('../config/secrets');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://localhost:27017/test';
-var item
+var url = 'mongodb://admin:hackduke@ds053794.mongolab.com:53794/mongodongo';
+var item;
 /**
  * GET /request
  * request form page.
  */
 var findRequests = function(db, callback) {
    var arr = [];
-   var cursor =db.collection('requests').find( { "_id": item } );
+   var cursor =db.collection('requests').find( { "_id": ObjectId(item) } );
    cursor.each(function(err, doc) {
       assert.equal(err, null);
       if (doc != null) {
@@ -27,7 +27,7 @@ var findRequests = function(db, callback) {
    });
 };
 exports.getBasket = function(req, res) {
-  item = req.params.id
+  item = req.param('id');
 MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     findRequests(db, function(arr) {

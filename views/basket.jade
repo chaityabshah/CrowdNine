@@ -8,17 +8,26 @@ block content
   form.form-horizontal(role='form', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
+      label(class='col-sm-2 control-label', for='name') Name
+      .col-sm-8
+        each basketItem in arr
+          h5 !{basketItem.name}
+    .form-group
       label(class='col-sm-2 control-label', for='name') Basket
       .col-sm-8
-        h5 Colgate Optic White Toothpaste (5 oz), Starburst Jelly Beans, Monster Zero Ultra (16 oz)
+        each basketItem in arr
+          each item in basketItem.itemList
+            h5 !{item}
     .form-group
       label(class='col-sm-2 control-label', for='location') Location
       .col-sm-8
-        h5 Charlotte
+        each basketItem in arr
+          h5 !{basketItem.city}
     .form-group
       label(class='col-sm-2 control-label', for='cost') Cost
       .col-sm-8
-        h5 $10.37
+        each basketItem in arr
+          h5 $!{basketItem.priceTotal}
     .form-group
       label(class='col-sm-2 control-label', for='raised') Raised
       .col-sm-8
@@ -33,8 +42,6 @@ block content
           h5 Help fund this basket
           input.form-control(type='text', name='money', id='money', placeholder='$5.00')
           form(method='POST')
-    each item in arr
-      p !{item._id}
     input(type='hidden', name='_csrf', value=_csrf)
     script(
     src='https://checkout.stripe.com/checkout.js',

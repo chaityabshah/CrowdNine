@@ -81,6 +81,12 @@ exports.postRequest = function(req, res) {
   } else {
     var newArr = [];
   }
+  var newArr1 = [];
+  for(var i = 0; i < newArr.length; i++) {
+    if(newArr[i] != null) {
+        newArr1.push(newArr[i]);
+    }
+  }
   if(req.body.price == 0) {
     var newPrice = "0.00";
   } else {
@@ -104,7 +110,7 @@ exports.postRequest = function(req, res) {
     state: req.body.state,
     phone: req.body.phone,
     priceTotal: newPrice,
-    itemList: newArr
+    itemList: newArr1
   });
 
   requestVar.save(function(err) {
