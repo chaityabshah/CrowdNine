@@ -13,7 +13,7 @@ var secrets = require('../config/secrets');
  */
 exports.getRequest = function(req, res) {
   res.render('request', {
-    title: 'Request',
+    title: 'Request'
   });
 };
 

@@ -5,7 +5,9 @@ var mongoose = require('mongoose');
 var requestSchema = new mongoose.Schema({
 
   name: String,
-  address: String,
+  street: String,
+  city: String,
+  state: String,
   phone: String,
   store: String,
   itemList: Array,
