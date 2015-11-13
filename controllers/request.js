@@ -81,15 +81,12 @@ exports.postRequest = function(req, res) {
   } else {
     var newArr = [];
   }
-<<<<<<< HEAD
   var newArr1 = [];
   for(var i = 0; i < newArr.length; i++) {
     if(newArr[i] != null) {
         newArr1.push(newArr[i]);
     }
   }
-=======
->>>>>>> a8cbef810a43d95a41163e8a69101976fb07ca44
   if(req.body.price == 0) {
     var newPrice = "0.00";
   } else {
@@ -113,12 +110,8 @@ exports.postRequest = function(req, res) {
     state: req.body.state,
     phone: req.body.phone,
     priceTotal: newPrice,
-<<<<<<< HEAD
     itemList: newArr1
-=======
-    itemList: newArr
->>>>>>> a8cbef810a43d95a41163e8a69101976fb07ca44
-  });
+ });
 
   requestVar.save(function(err) {
     if (err) return next(err);
