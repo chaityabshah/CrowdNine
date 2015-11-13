@@ -36,20 +36,26 @@ block content
       label(class='col-sm-2 control-label', for='progress') Progress
       .col-sm-8
         h5 0%
-    .form-group
-      .row
-        .col-sm-4
-          h5 Help fund this basket
-          input.form-control(type='text', name='money', id='money', placeholder='$5.00')
-          form(method='POST')
-    each item in arr
-      p !{item._id}
-    input(type='hidden', name='_csrf', value=_csrf)
-    script(
-    src='https://checkout.stripe.com/checkout.js',
-    class='stripe-button',
-    data-key='pk_test_zcuyz8JcFhVIISmwAJlH3G0j',
-    data-image='http://i.imgur.com/CBixK4W.png',
-    data-name='CrowdNine Basket',
-    data-description='Grocery Basket',
-    data-amount=100)
+    input#custom-donation-amount.form-control(type='number', placeholder='5.00', min='0', max='100')
+    script(src='https://checkout.stripe.com/checkout.js')
+    button#customButton  Help fund this basket
+    script.
+      var handler = StripeCheckout.configure({
+      key: 'pk_test_zcuyz8JcFhVIISmwAJlH3G0j',
+      image: 'http://i.imgur.com/CBixK4W.png',
+      token: function(token) {
+      // Use the token to create the charge with a server-side script.
+      // You can access the token ID with `token.id`
+      }
+      });
+      document.getElementById('customButton').addEventListener('click', function(e) {
+      // This line is the only real modification...
+      var amount = $("#custom-donation-amount").val() * 100;
+      handler.open({
+      name: 'CrowdNine',
+      description: 'CrowdNine Basket',
+      // ... aside from this line where we use the value.
+      amount: amount
+      });
+      e.preventDefault();
+      });
