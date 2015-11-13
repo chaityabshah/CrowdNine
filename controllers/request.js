@@ -99,40 +99,9 @@ exports.postRequest = function(req, res) {
   req.assert('phone', 'Phone number is invalid.').isMobilePhone("en-US");
   var errors = req.validationErrors();
   
-  var latlng = {lat:0, lng:0};
-
-  if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/request');
-  }
-  var requestVar = new Request({
-    name: req.body.name,
-    street: req.body.street,
-    city: req.body.city,
-    state: req.body.state,
-    phone: req.body.phone,
-    priceTotal: newPrice,
-    itemList: newArr1,
-    latitude: latlng.lat,
-    longitude: latlng.lng
- });
-
-  requestVar.save(function(err) {
-    if (err) return next(err);
-        geocodeLoc(combined).then(function(result){
-            latlng = result;
-            var nearest = nearestPostmates(result.lat, result.lng).address;
-            if(req.body.state != nearest.slice(-2)) {
-                req.flash('errors', { msg: "Nearest store not within state."});
-                res.redirect('/request');
-            } else {
-                req.flash('success', { msg: "Request sent."});
-                res.redirect('/request');
-            }
-        });
-    });
+  var latlng;
   
-  var geocodeLoc = function(adr) {
+    var geocodeLoc = function(adr) {
     var result;
     
     var d = Promise.defer();
@@ -155,10 +124,40 @@ exports.postRequest = function(req, res) {
             }
         }
         
-    requestVar.latitude = result.lat;
-    requestVar.longitude = result.lng;
-        
     });
     return d;
+    latlng = result;
 };
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/request');
+  }
+  var requestVar = new Request({
+    name: req.body.name,
+    street: req.body.street,
+    city: req.body.city,
+    state: req.body.state,
+    phone: req.body.phone,
+    priceTotal: newPrice,
+    itemList: newArr1,
+    latitude: latlng.lat,
+    longitude: latlng.lng
+ });
+
+  requestVar.save(function(err) {
+    if (err) return next(err);
+        geocodeLoc(combined).then(function(result){
+            latlng = result;
+            
+            var nearest = nearestPostmates(result.lat, result.lng).address;
+            if(req.body.state != nearest.slice(-2)) {
+                req.flash('errors', { msg: "Nearest store not within state."});
+                res.redirect('/request');
+            } else {
+                req.flash('success', { msg: "Request sent."});
+                res.redirect('/request');
+            }
+        });
+    });
 };
