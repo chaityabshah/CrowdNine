@@ -20,7 +20,7 @@ exports.getRequest = function(req, res) {
 function nearestPostmates(glat, glng) {
     var cities = [
         {city:"Atlanta",lat:33.748995,lng:-84.387982,dist:0,address:"595 Piedmont Ave NE, Atlanta, GA"},
-        {city:"Austin",lat:30.267153,lng:-97.743061,dist:0,address:"1920 EAST RIVERSIDE DRIVE, Austin, TX"},
+        {city:"Austin",lat:30.267153,lng:-97.743061,dist:0,address:"1920 East Riverside Drive, Austin, TX"},
         {city:"Baltimore",lat:39.290385,lng:-76.612189,dist:0,address:"1300 E North Ave, Baltimore, MD"},
         {city:"Boston",lat:42.360082,lng:-71.058880,dist:0,address:"24 School St, Boston, MA"},
         {city:"Charlotte",lat:35.227087,lng:-80.843127,dist:0,address:"4701 South Blvd, Charlotte, NC"},
@@ -81,6 +81,11 @@ exports.postRequest = function(req, res) {
   } else {
     var newArr = [];
   }
+  if(req.body.price == 0) {
+    var newPrice = "0.00";
+  } else {
+    var newPrice = req.body.price;
+  }
   var combined = req.body.street + "+" + req.body.city + "+" + req.body.state;
   req.assert('street', 'Street is empty.').notEmpty();
   req.assert('city', 'City is empty.').notEmpty();
@@ -98,11 +103,27 @@ exports.postRequest = function(req, res) {
     city: req.body.city,
     state: req.body.state,
     phone: req.body.phone,
-    priceTotal: req.body.price,
+    priceTotal: newPrice,
     itemList: newArr
   });
-  
-  var latlng;
+
+  requestVar.save(function(err) {
+    if (err) return next(err);
+        geocodeLoc(combined).then(function(result){
+            latlng = result;
+            var nearest = nearestPostmates(result.lat, result.lng);
+            if(req.body.state != nearest.slice(-2)) {
+                req.flash('errors', { msg: "Nearest store not within state."});
+                res.redirect('/request');
+            } else {
+                req.flash('success', { msg: "Request sent."});
+                res.redirect('/request');
+            }
+        });
+    });
+    var latlng;
+
+
   
   var geocodeLoc = function(adr) {
     var result;
@@ -117,7 +138,6 @@ exports.postRequest = function(req, res) {
     //var baseURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address;
     request(baseURL, function(e, r, b){
         if(JSON.parse(b)["results"].length == 0) {
-            
             d.resolve(e);
         } else {
             if(!e && r.statusCode === 200){
@@ -131,18 +151,4 @@ exports.postRequest = function(req, res) {
     });
     return d;
 };
-
-try {
-geocodeLoc(combined).then(function(result){
-    latlng = result;
-    console.log(nearestPostmates(result.lat, result.lng));
-});
-} catch (err){
-}
-
-  requestVar.save(function(err) {
-    if (err) return next(err);
-      req.flash('success', { msg: "Request sent."});     
-      res.redirect('/request');
-    });
 };
