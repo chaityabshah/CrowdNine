@@ -9,7 +9,7 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://admin:hackduke@ds053794.mongolab.com:53794/mongodongo';
-var item
+var item;
 /**
  * GET /request
  * request form page.
@@ -27,7 +27,7 @@ var findRequests = function(db, callback) {
    });
 };
 exports.getBasket = function(req, res) {
-  item = req.params.id
+  item = req.params.id;
 MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     findRequests(db, function(arr) {
