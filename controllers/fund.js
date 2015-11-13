@@ -11,7 +11,7 @@ var requestIP = require('request-ip');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://admin:hackduke@ds053794.mongolab.com:53794/mongodongo';
+var url = secrets.db;
 
     /*var ip = reques.headers['x-forwarded-for'] ||
             reques.connection.remoteAddress ||

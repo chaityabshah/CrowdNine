@@ -98,6 +98,8 @@ exports.postRequest = function(req, res) {
   req.assert('state', 'State must be 2 letters.').len(2, 2);
   req.assert('phone', 'Phone number is invalid.').isMobilePhone("en-US");
   var errors = req.validationErrors();
+  
+  var latlng = {lat:0, lng:0};
 
   if (errors) {
     req.flash('errors', errors);
@@ -114,8 +116,6 @@ exports.postRequest = function(req, res) {
     latitude: latlng.lat,
     longitude: latlng.lng
  });
-
-  var latlng;
 
   requestVar.save(function(err) {
     if (err) return next(err);
