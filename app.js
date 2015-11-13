@@ -57,6 +57,7 @@ mongoose.connection.on('error', function() {
  * Express configuration.
  */
 app.set('port', process.env.VCAP_APP_PORT || 3000);
+console.log(process.env.VCAP_APP_HOST);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
