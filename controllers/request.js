@@ -20,7 +20,7 @@ exports.getRequest = function(req, res) {
 function nearestPostmates(glat, glng) {
     var cities = [
         {city:"Atlanta",lat:33.748995,lng:-84.387982,dist:0,address:"595 Piedmont Ave NE, Atlanta, GA"},
-        {city:"Austin",lat:30.267153,lng:-97.743061,dist:0,address:"1920 EAST RIVERSIDE DRIVE, Austin, TX"},
+        {city:"Austin",lat:30.267153,lng:-97.743061,dist:0,address:"1920 East Riverside Drive, Austin, TX"},
         {city:"Baltimore",lat:39.290385,lng:-76.612189,dist:0,address:"1300 E North Ave, Baltimore, MD"},
         {city:"Boston",lat:42.360082,lng:-71.058880,dist:0,address:"24 School St, Boston, MA"},
         {city:"Charlotte",lat:35.227087,lng:-80.843127,dist:0,address:"4701 South Blvd, Charlotte, NC"},
@@ -67,53 +67,88 @@ function compare(a,b) {
  * POST /request
  * Send a request form via Nodemailer.
  */
+function flash(req, res) {
+    req.flash('errors', { msg: "Please enter a valid address."});
+    res.redirect('/request');
+}
 exports.postRequest = function(req, res) {
  // var name = req.body.name;
   //var address = req.body.address;
   //var phone = req.body.phone;
   //INSERT THE CODE TO FIND STUFF HERE
-  
+  if(req.body.arr.length != 0) {
+    var newArr = JSON.parse(req.body.arr);
+  } else {
+    var newArr = [];
+  }
+  if(req.body.price == 0) {
+    var newPrice = "0.00";
+  } else {
+    var newPrice = req.body.price;
+  }
+  var combined = req.body.street + "+" + req.body.city + "+" + req.body.state;
+  req.assert('street', 'Street is empty.').notEmpty();
+  req.assert('city', 'City is empty.').notEmpty();
+  req.assert('state', 'State must be 2 letters.').len(2, 2);
+  req.assert('phone', 'Phone number is invalid.').isMobilePhone("en-US");
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/request');
+  }
   var requestVar = new Request({
     name: req.body.name,
-    address: req.body.address,
-    phone: req.body.phone
+    street: req.body.street,
+    city: req.body.city,
+    state: req.body.state,
+    phone: req.body.phone,
+    priceTotal: newPrice,
+    itemList: newArr
   });
-  
-  var latlng;
-  
-  var geocodeLoc = function(adr) {
-    var result;
-    var d = Promise.defer();
-    var requestStart = "https://maps.googleapis.com/maps/api/geocode/json?address=";
-    var address = adr.replace(",", "").replace(" ", "+");
-    var APIkey = "&key=AIzaSyDSxfQbMazAVi5f6sa_6u2U0g8XXqIv9lk";
-
-    var baseURL = requestStart.concat(address).concat(APIkey);
-    
-    //var baseURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address;
-    
-    request(baseURL, function(e, r, b){
-        if(!e && r.statusCode === 200){
-            result = (JSON.parse(b).results[0].geometry.location);
-            d.resolve(result);
-        }else{
-            d.reject(e);
-        }
-    });
-    return d;
-};
-
-try {
-geocodeLoc(req.body.address).then(function(result){
-    latlng = result;
-    console.log(nearestPostmates(result.lat, result.lng));
-});} catch (err){
-    
-}
 
   requestVar.save(function(err) {
     if (err) return next(err);
-      req.flash('success', { msg: "Request sent."});     
-      res.redirect('/request');
+        geocodeLoc(combined).then(function(result){
+            latlng = result;
+            var nearest = nearestPostmates(result.lat, result.lng);
+            if(req.body.state != nearest.slice(-2)) {
+                req.flash('errors', { msg: "Nearest store not within state."});
+                res.redirect('/request');
+            } else {
+                req.flash('success', { msg: "Request sent."});
+                res.redirect('/request');
+            }
+        });
     });
+    var latlng;
+
+
+  
+  var geocodeLoc = function(adr) {
+    var result;
+    
+    var d = Promise.defer();
+    var requestStart = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    var APIkey = "&key=AIzaSyDSxfQbMazAVi5f6sa_6u2U0g8XXqIv9lk";
+
+    var baseURL = requestStart.concat(adr).concat(APIkey);
+    
+    
+    //var baseURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address;
+    request(baseURL, function(e, r, b){
+        if(JSON.parse(b)["results"].length == 0) {
+            d.resolve(e);
+        } else {
+            if(!e && r.statusCode === 200){
+            result = (JSON.parse(b).results[0].geometry.location);
+            d.resolve(result);
+            }else{
+                d.reject(e);
+            }
+        }
+        
+    });
+    return d;
+};
 };
