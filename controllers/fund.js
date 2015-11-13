@@ -4,16 +4,20 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var Request = require('../models/Request');
-var reques = require('request');
+var request = require('request');
 var secrets = require('../config/secrets');
 var gip = require('geoip-lite');
 var requestIP = require('request-ip');
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+var ObjectId = require('mongodb').ObjectID;
+var url = 'mongodb://admin:hackduke@ds053794.mongolab.com:53794/mongodongo';
 
     /*var ip = reques.headers['x-forwarded-for'] ||
             reques.connection.remoteAddress ||
             reques.socket.remoteAddress ||
             reques.connection.socket.remoteAddress;*/
-    
+
 
 /*function getPos(pos) {
     var lat = pos.coords.latitude;
@@ -25,30 +29,44 @@ var requestIP = require('request-ip');
  * GET /request
  * request form page.
  */
+var findRequests = function(db, callback) {
+   var arr = [];
+   var cursor =db.collection('requests').find( );
+   cursor.each(function(err, doc) {
+      assert.equal(err, null);
+      if (doc != null) {
+         arr.push(doc);
+      } else {
+         callback(arr);
+      }
+   });
+};
 exports.getFund = function(req, res) {
-    
+  MongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
+    findRequests(db, function(arr) {
+      res.render('fund', {
+        title: 'Fund',
+        arr: arr
+      });
+        db.close();
+    });
+  });
+
+  var geoIP = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+  var IPcoord = gip.lookup(geoIP);
+
+};
   /*var ipMiddleware = function(req1, res1, next1) {
-    var clientIp = requestIP.getClientIp(req1); // on localhost > 127.0.0.1 
+    var clientIp = requestIP.getClientIp(req1); // on localhost > 127.0.0.1
     next1();
     };
-    
-  var geo = gip.lookup(ipMiddleware);  */
-    
-/*var geo = function (req) {
-        return (req.headers['x-forwarded-for'] || '').split(',')[0] 
-        || req.connection.remoteAddress;
-};*/
-    
-var geoIP = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
-var IPcoord = gip.lookup(geoIP);
-    
-  console.log(IPcoord);
-  
+
+  var geo = gip.lookup(ipMiddleware);
+
+  console.log(geo);
+  */
   //req.flash('success', {msg: getLocation()});
-  res.render('fund', {
-    title: 'Fund'
-  });
-};
 
 /**
  * POST /fund
@@ -59,7 +77,7 @@ var IPcoord = gip.lookup(geoIP);
   //var address = req.body.address;
   //var phone = req.body.phone;
   //INSERT THE CODE TO FIND STUFF HERE
-  
+
   //var req = new Fund({
     //name: req.body.name,
     //address: req.body.address,
@@ -68,5 +86,5 @@ var IPcoord = gip.lookup(geoIP);
 
 
  // res.redirect('/fund');
-  
+
 //};
