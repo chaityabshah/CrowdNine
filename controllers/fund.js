@@ -27,12 +27,19 @@ var requestIP = require('request-ip');
  */
 exports.getFund = function(req, res) {
     
-  var ipMiddleware = function(req1, res1, next1) {
+  /*var ipMiddleware = function(req1, res1, next1) {
     var clientIp = requestIP.getClientIp(req1); // on localhost > 127.0.0.1 
     next1();
     };
     
-  var geo = gip.lookup(ipMiddleware);  
+  var geo = gip.lookup(ipMiddleware);  */
+    
+/*var geo = function (req) {
+        return (req.headers['x-forwarded-for'] || '').split(',')[0] 
+        || req.connection.remoteAddress;
+};*/
+    
+var geo = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
     
   console.log(geo);
   
