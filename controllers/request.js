@@ -125,8 +125,8 @@ exports.postRequest = function(req, res) {
         }
         
     });
-    return d;
     latlng = result;
+    return d;
 };
 
   if (errors) {
