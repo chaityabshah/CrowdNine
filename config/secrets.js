@@ -52,7 +52,7 @@ module.exports = {
   facebook: {
     clientID: process.env.FACEBOOK_ID || '754220301289665',
     clientSecret: process.env.FACEBOOK_SECRET || '41860e58c256a3d7ad8267d3c1939a4a',
-    callbackURL: 'crowdnine.org/auth/facebook/callback',
+    callbackURL: '/auth/facebook/callback',
     passReqToCallback: true
   },
 
@@ -80,7 +80,7 @@ module.exports = {
   google: {
     clientID: process.env.GOOGLE_ID || '828110519058.apps.googleusercontent.com',
     clientSecret: process.env.GOOGLE_SECRET || 'JdZsIaWhUFIchmC1a_IZzOHb',
-    callbackURL: 'crowdnine.org/auth/google/callback',
+    callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
 
