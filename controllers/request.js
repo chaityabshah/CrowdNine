@@ -56,7 +56,7 @@ function nearestPostmates(glat, glng) {
         
         cities.sort(compare);
         
-        return cities[0].address;
+        return cities[0];
 }
 
 function compare(a,b) {
@@ -110,14 +110,18 @@ exports.postRequest = function(req, res) {
     state: req.body.state,
     phone: req.body.phone,
     priceTotal: newPrice,
-    itemList: newArr1
+    itemList: newArr1,
+    latitude: latlng.lat,
+    longitude: latlng.lng
  });
+
+  var latlng;
 
   requestVar.save(function(err) {
     if (err) return next(err);
         geocodeLoc(combined).then(function(result){
             latlng = result;
-            var nearest = nearestPostmates(result.lat, result.lng);
+            var nearest = nearestPostmates(result.lat, result.lng).address;
             if(req.body.state != nearest.slice(-2)) {
                 req.flash('errors', { msg: "Nearest store not within state."});
                 res.redirect('/request');
@@ -127,9 +131,6 @@ exports.postRequest = function(req, res) {
             }
         });
     });
-    var latlng;
-
-
   
   var geocodeLoc = function(adr) {
     var result;

@@ -11,7 +11,9 @@ var requestSchema = new mongoose.Schema({
   phone: String,
   store: String,
   itemList: Array,
-  priceTotal: String
+  priceTotal: String,
+  latitude: String,
+  longitude: String
 });
 
 /**
