@@ -9,14 +9,22 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://admin:hackduke@ds053794.mongolab.com:53794/mongodongo';
+<<<<<<< HEAD
 var item;
+=======
+var item
+>>>>>>> a8cbef810a43d95a41163e8a69101976fb07ca44
 /**
  * GET /request
  * request form page.
  */
 var findRequests = function(db, callback) {
    var arr = [];
+<<<<<<< HEAD
    var cursor =db.collection('requests').find( { "_id": ObjectId(item) } );
+=======
+   var cursor =db.collection('requests').find( { "_id": item } );
+>>>>>>> a8cbef810a43d95a41163e8a69101976fb07ca44
    cursor.each(function(err, doc) {
       assert.equal(err, null);
       if (doc != null) {
@@ -27,7 +35,11 @@ var findRequests = function(db, callback) {
    });
 };
 exports.getBasket = function(req, res) {
+<<<<<<< HEAD
   item = req.param('id');
+=======
+  item = req.params.id
+>>>>>>> a8cbef810a43d95a41163e8a69101976fb07ca44
 MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     findRequests(db, function(arr) {
