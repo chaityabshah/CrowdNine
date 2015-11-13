@@ -155,6 +155,9 @@ exports.postRequest = function(req, res) {
             }
         }
         
+    requestVar.latitude = result.lat;
+    requestVar.longitude = result.lng;
+        
     });
     return d;
 };
