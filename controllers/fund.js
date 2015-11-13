@@ -39,9 +39,10 @@ exports.getFund = function(req, res) {
         || req.connection.remoteAddress;
 };*/
     
-var geo = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+var geoIP = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.connection.remoteAddress;
+var IPcoord = gip.lookup(geoIP);
     
-  console.log(geo);
+  console.log(IPcoord);
   
   //req.flash('success', {msg: getLocation()});
   res.render('fund', {
